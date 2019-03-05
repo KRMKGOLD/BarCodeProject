@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import com.google.zxing.integration.android.IntentIntegrator
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,11 +24,22 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.scanButton -> {
-                val scanButtonIntent = Intent(this, testActivity::class.java)
-                startActivity(scanButtonIntent)
+                runCaptureActivity()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//    }
+
+    fun runCaptureActivity() {
+        val integrator = IntentIntegrator(this)
+        integrator.captureActivity = CustomCaptureActivity::class.java
+        integrator.setOrientationLocked(false)
+        integrator.setPrompt("바코드나 QR코드를 인식해주세요.")
+        integrator.initiateScan()
     }
 }
