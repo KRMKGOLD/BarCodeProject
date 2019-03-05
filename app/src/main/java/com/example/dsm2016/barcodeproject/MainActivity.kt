@@ -3,16 +3,28 @@ package com.example.dsm2016.barcodeproject
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
+import com.google.zxing.MultiFormatWriter
 import com.google.zxing.integration.android.IntentIntegrator
+import android.graphics.Bitmap
+import com.google.zxing.BarcodeFormat
+import android.graphics.Color
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        checkListButton.setOnClickListener {
+            val intent = Intent(this, ListActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -24,22 +36,52 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.scanButton -> {
-                runCaptureActivity()
-                true
+                runCaptureActivity(); true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
 
-    fun runCaptureActivity() {
+        if (result != null){
+            if(result.contents == null) {
+                Toast.makeText(this, "스캔에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(this, "스캔에 성공했습니다. Data : ${result.contents}", Toast.LENGTH_SHORT).show()
+//                Log.d("Succeed scan Code", result.contents)
+                setImageData(result.contents)
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun runCaptureActivity() {
         val integrator = IntentIntegrator(this)
         integrator.captureActivity = CustomCaptureActivity::class.java
         integrator.setOrientationLocked(false)
-        integrator.setPrompt("바코드나 QR코드를 인식해주세요.")
+        integrator.setPrompt("바코드나 QR코드를 사각형 안으로 넣어주세요.")
+//        integrator.addExtra("SCAN_MODE", "QR_CODE_MODE")
         integrator.initiateScan()
+    }
+
+    private fun setImageData(result : String) {
+        val imageWriter = MultiFormatWriter()
+
+        val width = 320
+        val height = 180
+
+        val bytemap = imageWriter.encode(result, BarcodeFormat.CODE_128, width, height)
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+
+        for (i in 0 until width)
+            for (j in 0 until height) {
+                bitmap.setPixel(i, j, if (bytemap.get(i, j)) Color.BLACK else Color.WHITE)
+            }
+        sampleImage.setImageBitmap(bitmap)
+        sampleImage.invalidate()
     }
 }
