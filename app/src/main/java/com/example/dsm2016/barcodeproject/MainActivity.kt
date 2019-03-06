@@ -14,18 +14,23 @@ import android.graphics.Bitmap
 import com.google.zxing.BarcodeFormat
 import android.graphics.Color
 import com.google.zxing.common.BitMatrix
+import com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var codeResult : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         checkListButton.setOnClickListener {
-            val intent = Intent(this, ListActivity::class.java)
-            startActivity(intent)
+            val activityIntent = Intent(this, ListActivity::class.java)
+            activityIntent.putExtra("data", codeResult)
+            startActivity(activityIntent)
+//            ListActivity().listAdapter.notifyDataSetChanged()
         }
     }
 
@@ -54,11 +59,7 @@ class MainActivity : AppCompatActivity() {
             else {
                 Toast.makeText(this, "스캔에 성공했습니다. Data : ${result.contents}", Toast.LENGTH_SHORT).show()
 //                Log.d("Succeed scan Code", result.contents)
-
-                when(isStringNumber(result.contents)){
-                    true -> { sampleImage1.setImageBitmap(getBarCodeImageData(result.contents)) }
-                    false -> { sampleImage2.setImageBitmap(getQRCodeImageData(result.contents)) }
-                }
+                codeResult = result.contents
             }
         }
 
@@ -73,52 +74,5 @@ class MainActivity : AppCompatActivity() {
         integrator.initiateScan()
     }
 
-    private val imageWriter = MultiFormatWriter()
-    private val codeEncoder = BarcodeEncoder()
 
-    private fun getBarCodeImageData(result : String) :  Bitmap{
-        val _1dWidth = 320
-        val _1dHeight = 180
-
-
-        val BCbyteMap = imageWriter.encode(result, BarcodeFormat.CODE_128, _1dWidth, _1dHeight)
-//        val BCbitmap = Bitmap.createBitmap(_1dWidth, _1dHeight, Bitmap.Config.ARGB_8888)
-        val BCbitmap = codeEncoder.createBitmap(BCbyteMap)
-
-        for (i in 0 until _1dWidth)
-            for (j in 0 until _1dHeight) {
-                BCbitmap.setPixel(i, j, if (BCbyteMap.get(i, j)) Color.BLACK else Color.WHITE)
-                // 바코드 bitmap
-            }
-
-        return BCbitmap
-    }
-
-    private fun getQRCodeImageData(result : String) : Bitmap{
-        val _2dWidth = 100
-        val _2dHeight = 100
-
-        val codeEncoder = BarcodeEncoder()
-
-        val QRbyteMap = imageWriter.encode(result, BarcodeFormat.QR_CODE, _2dWidth, _2dHeight)
-        val QRbitmap = codeEncoder.createBitmap(QRbyteMap)
-
-        for (i in 0 until _2dWidth)
-            for (j in 0 until _2dHeight) {
-                QRbitmap.setPixel(i, j, if (QRbyteMap.get(i, j)) Color.BLACK else Color.WHITE)
-                // QR코드 bitmap
-            }
-
-        return QRbitmap
-    }
-
-    fun isStringNumber(data : String) : Boolean {
-        return try {
-            println("${data.toDouble()}")
-            true
-        } catch (e : NumberFormatException) {
-            false
-        }
-
-    }
 }
