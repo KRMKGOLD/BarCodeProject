@@ -17,15 +17,20 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        val codeData : String = intent.getStringExtra("data")
-        val codeImage : Bitmap
+        var codeData : String
+        var codeImage : Bitmap
 
-        codeImage = when(ChangeCodeToImage().isStringNumber(codeData)) {
-            true -> ChangeCodeToImage().getBarCodeImageData(codeData)
-            false -> ChangeCodeToImage().getQRCodeImageData(codeData)
+        if(intent.getStringExtra("data") is String){
+            codeData = intent.getStringExtra("data")
+            intent.removeExtra("data")
+
+            codeImage = when(ChangeCodeToImage().isStringNumber(codeData)) {
+                true -> ChangeCodeToImage().getBarCodeImageData(codeData)
+                false -> ChangeCodeToImage().getQRCodeImageData(codeData)
+            }
+            codeArray.add(codeData(codeImage, codeData))
         }
 
-        codeArray.add(codeData(codeImage, codeData))
         listRecycler.adapter = listAdapter
 
         val listLayoutManager = LinearLayoutManager(this)

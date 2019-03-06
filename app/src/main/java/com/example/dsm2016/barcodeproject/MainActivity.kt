@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var codeResult : String
+    var codeResult : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +28,15 @@ class MainActivity : AppCompatActivity() {
 
         checkListButton.setOnClickListener {
             val activityIntent = Intent(this, ListActivity::class.java)
-            activityIntent.putExtra("data", codeResult)
-            startActivity(activityIntent)
+            if(!(codeResult.isEmpty())) {
+                activityIntent.putExtra("data", codeResult)
+                codeResult = ""
+                startActivity(activityIntent)
+            }
+            else {
+                startActivity(activityIntent)
+                // dialog
+            }
 //            ListActivity().listAdapter.notifyDataSetChanged()
         }
     }
