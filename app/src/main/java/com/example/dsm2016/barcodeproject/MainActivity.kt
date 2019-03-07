@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     var codeResult : ArrayList<String> = arrayListOf()
+    var codeFormat : ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,13 +23,12 @@ class MainActivity : AppCompatActivity() {
             val activityIntent = Intent(this, ListActivity::class.java)
             if(!(codeResult.isEmpty())) {
                 activityIntent.putExtra("data", codeResult)
+                activityIntent.putExtra("format", codeFormat)
                 startActivity(activityIntent)
             }
             else {
                 startActivity(activityIntent)
-                // dialog
             }
-//            ListActivity().listAdapter.notifyDataSetChanged()
             codeResult.clear()
         }
     }
@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this, "스캔에 성공했습니다. Data : ${result.contents}", Toast.LENGTH_SHORT).show()
-//                Log.d("Succeed scan Code", result.contents)
                 codeResult.add(result.contents)
+                codeFormat.add(result.formatName)
             }
         }
 
@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         integrator.captureActivity = CustomCaptureActivity::class.java
         integrator.setOrientationLocked(false)
         integrator.setPrompt("바코드나 QR코드를 사각형 안으로 넣어주세요.")
-//        integrator.addExtra("SCAN_MODE", "QR_CODE_MODE")
         integrator.initiateScan()
     }
 
