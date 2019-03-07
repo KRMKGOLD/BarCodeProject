@@ -3,11 +3,11 @@ package com.example.dsm2016.barcodeproject
 import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_list.*
 
 var codeArray = arrayListOf<codeData>()
+var intentDataArray = arrayListOf<codeData>()
 
 class ListActivity : AppCompatActivity() {
 
@@ -17,25 +17,33 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        var codeData : String
-        var codeImage : Bitmap
+        var codeListData : ArrayList<String> = arrayListOf()
+        val codeListImage : ArrayList<Bitmap> = arrayListOf()
 
-        if(intent.getStringExtra("data") is String){
-            codeData = intent.getStringExtra("data")
-            intent.removeExtra("data")
+        if(intent.getStringArrayListExtra("data") != null) {
+            codeListData = intent.getStringArrayListExtra("data")
 
-            codeImage = when(ChangeCodeToImage().isStringNumber(codeData)) {
-                true -> ChangeCodeToImage().getBarCodeImageData(codeData)
-                false -> ChangeCodeToImage().getQRCodeImageData(codeData)
+            for(index in codeListData.indices){
+                when(ChangeCodeToImage().isStringNumber(codeListData[index])) {
+                    true -> codeListImage.add(ChangeCodeToImage().getBarCodeImageData(codeListData[index]))
+                    false -> codeListImage.add(ChangeCodeToImage().getQRCodeImageData(codeListData[index]))
+                }
             }
-            codeArray.add(codeData(codeImage, codeData))
+
+            if(codeListData.lastIndex == codeListImage.lastIndex){
+                for(index in 0..codeListData.lastIndex){
+                    intentDataArray.add(codeData(codeListImage[index], codeListData[index]))
+                }
+            }
+            codeArray.addAll(intentDataArray)
         }
+        intent.removeExtra("data")
+        intentDataArray.clear()
 
         listRecycler.adapter = listAdapter
 
         val listLayoutManager = LinearLayoutManager(this)
         listRecycler.layoutManager = listLayoutManager
         listRecycler.setHasFixedSize(true)
-
     }
 }

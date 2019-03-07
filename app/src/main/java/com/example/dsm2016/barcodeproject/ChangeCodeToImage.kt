@@ -1,6 +1,5 @@
 package com.example.dsm2016.barcodeproject
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import com.google.zxing.BarcodeFormat
