@@ -41,39 +41,43 @@
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout
-            android:orientation="horizontal"
+    <Button
+            android:text="저장된 데이터 삭제"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/checkListButton" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:weightSum="2"
-    >
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_launcher"
-                android:id="@+id/sampleImage1"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/checkListButton"
-                app:layout_constraintVertical_bias="0.501"
-                android:layout_weight="1"
-        />
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_launcher"
-                android:id="@+id/sampleImage2"
-                android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/checkListButton" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_weight="1"
-        />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/deleteDataButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp" android:layout_marginLeft="64dp" android:layout_marginStart="64dp"
+            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/reloadDataButton"/>
+    <Button
+            android:text="데이터 불러오기"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reloadDataButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp" android:layout_marginLeft="64dp" android:layout_marginStart="64dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/saveDataButton"/>
+    <Button
+            android:text="데이터 저장"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/saveDataButton" android:layout_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginLeft="64dp"
+            android:layout_marginStart="64dp" android:layout_marginEnd="64dp" android:layout_marginRight="64dp"
+            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/checkListButton"/>
+    <TextView
+            android:text="주의 : 데이터 저장 시 인식 기록을 한번 들어갔다 나와 주세요!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/checkListButton" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
 
 </android.support.constraint.ConstraintLayout>

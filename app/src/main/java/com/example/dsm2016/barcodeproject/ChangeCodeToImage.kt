@@ -23,7 +23,6 @@ class ChangeCodeToImage {
         val _1dWidth = 320
         val _1dHeight = 180
 
-
         val BCbyteMap = imageWriter.encode(result, BarcodeFormat.CODE_128, _1dWidth, _1dHeight)
 //        val BCbitmap = Bitmap.createBitmap(_1dWidth, _1dHeight, Bitmap.Config.ARGB_8888)
         val BCbitmap = codeEncoder.createBitmap(BCbyteMap)

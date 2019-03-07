@@ -37,15 +37,14 @@ class ListActivity : AppCompatActivity() {
 //            Toast.makeText(this, samepleToastString, Toast.LENGTH_SHORT).show()
 //            samepleToastString = ""
 
-            for(index in listAdapter.codeList.lastIndex downTo 0){
+            for(index in listAdapter.codeList.indices){
                 if(listAdapter.codeList[index].checked){
                     listAdapter.codeList.removeAt(index)
                 }
             }
             listAdapter.notifyDataSetChanged()
         }
-        for (i in 10 downTo -1) {
-        }
+
         val codeListData : ArrayList<String> = arrayListOf()
         val codeListImage : ArrayList<Bitmap> = arrayListOf()
 
