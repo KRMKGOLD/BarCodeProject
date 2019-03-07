@@ -1,27 +1,56 @@
 package com.example.dsm2016.barcodeproject
 
 import android.graphics.Bitmap
+
+
 import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_list.*
 
 var codeArray = arrayListOf<codeData>()
 var intentDataArray = arrayListOf<codeData>()
 
 class ListActivity : AppCompatActivity() {
-
     val listAdapter = ListAdapter(this, codeArray)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        var codeListData : ArrayList<String> = arrayListOf()
+        var samepleToastString = ""
+
+        for(index in listAdapter.codeList.indices){
+            listAdapter.codeList[index].checked = false
+        }
+        // 모든 바코드의 checkbox를 false로 바꾸기
+
+        deleteButton.setOnClickListener {
+//            for(index in listAdapter.codeList.indices){
+//                if(listAdapter.codeList[index].checked) {
+//                    samepleToastString += "${index}번째 바코드가 선택되었습니다. "
+//                }
+//            }
+//            Toast.makeText(this, samepleToastString, Toast.LENGTH_SHORT).show()
+//            samepleToastString = ""
+
+            for(index in listAdapter.codeList.lastIndex downTo 0){
+                if(listAdapter.codeList[index].checked){
+                    listAdapter.codeList.removeAt(index)
+                }
+            }
+            listAdapter.notifyDataSetChanged()
+        }
+        for (i in 10 downTo -1) {
+        }
+        val codeListData : ArrayList<String> = arrayListOf()
         val codeListImage : ArrayList<Bitmap> = arrayListOf()
 
         if(intent.getStringArrayListExtra("data") != null) {
-            codeListData = intent.getStringArrayListExtra("data")
+            codeListData.addAll( intent.getStringArrayListExtra("data"))
 
             for(index in codeListData.indices){
                 when(ChangeCodeToImage().isStringNumber(codeListData[index])) {
@@ -35,8 +64,11 @@ class ListActivity : AppCompatActivity() {
                     intentDataArray.add(codeData(codeListImage[index], codeListData[index]))
                 }
             }
+
             codeArray.addAll(intentDataArray)
+
         }
+
         intent.removeExtra("data")
         intentDataArray.clear()
 
@@ -45,5 +77,8 @@ class ListActivity : AppCompatActivity() {
         val listLayoutManager = LinearLayoutManager(this)
         listRecycler.layoutManager = listLayoutManager
         listRecycler.setHasFixedSize(true)
+
     }
+
+
 }

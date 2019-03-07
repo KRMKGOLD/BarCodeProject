@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 
@@ -20,14 +21,19 @@ class ListAdapter(val context: Context, val codeList : ArrayList<codeData>) : Re
         holder.bind(codeList[position])
     }
 
-
     inner class ListHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val codeImage = itemView.findViewById<ImageView>(R.id.listImage)
         val codeText = itemView.findViewById<TextView>(R.id.listText)
+        val codeCheckbox = itemView.findViewById<CheckBox>(R.id.rowCheckButton)
 
         fun bind(toBindList : codeData){
             codeImage.setImageBitmap(toBindList.codeImage)
             codeText.text = toBindList.content
+            codeCheckbox.isChecked = toBindList.checked
+
+            codeCheckbox.setOnClickListener {
+                codeList[adapterPosition].checked = !(codeList[adapterPosition].checked)
+            }
         }
     }
 }
