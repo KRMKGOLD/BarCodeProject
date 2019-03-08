@@ -31,7 +31,6 @@ class ListAdapter(val context: Context, val codeList : ArrayList<codeData>) : Re
             codeText.text = toBindList.content
             codeCheckbox.isChecked = toBindList.checked
 
-
             codeCheckbox.setOnClickListener {
                 codeList[adapterPosition].checked = !(codeList[adapterPosition].checked)
             }

@@ -21,17 +21,16 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        var samepleToastString = ""
-
         for(index in listAdapter.codeList.indices){
             listAdapter.codeList[index].checked = false
         }
-        // 모든 바코드의 checkbox를 false로 바꾸기
 
         deleteButton.setOnClickListener {
-            for(index in listAdapter.codeList.indices){
-                if(listAdapter.codeList[index].checked){
-                    listAdapter.codeList.removeAt(index)
+//            }
+
+            for(index in codeArray.lastIndex downTo 0){
+                if(codeArray[index].checked){
+                    codeArray.removeAt(index)
                 }
             }
             listAdapter.notifyDataSetChanged()
@@ -56,9 +55,8 @@ class ListActivity : AppCompatActivity() {
                 }
             }
 
-
             for(index in 0..codeListData.lastIndex){
-                intentDataArray.add(codeData(codeListImage[index], codeListData[index]))
+                intentDataArray.add(codeData(codeListImage[index], codeListData[index], codeFormat = codeListFormat[index]))
             }
 
             codeArray.addAll(intentDataArray)

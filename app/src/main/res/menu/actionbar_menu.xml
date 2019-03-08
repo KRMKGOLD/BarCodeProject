@@ -4,7 +4,7 @@
 
     <item
             android:id="@+id/scanButton"
-            android:icon="@drawable/ic_barScan"
+            android:icon="@drawable/ic_barscan"
             app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/scanQRButton"

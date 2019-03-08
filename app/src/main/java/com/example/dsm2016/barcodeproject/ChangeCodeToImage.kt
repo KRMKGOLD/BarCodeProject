@@ -10,14 +10,14 @@ class ChangeCodeToImage {
     val imageWriter = MultiFormatWriter()
     val codeEncoder = BarcodeEncoder()
 
-    fun isStringNumber(data : String) : Boolean {
-        return try {
-            println("${data.toDouble()}")
-            true
-        } catch (e : NumberFormatException) {
-            false
-        }
-    }
+//    fun isStringNumber(data : String) : Boolean {
+//        return try {
+//            println("${data.toDouble()}")
+//            true
+//        } catch (e : NumberFormatException) {
+//            false
+//        }
+//    }
 
     fun getBarCodeImageData(result : String) : Bitmap {
         val _1dWidth = 320
