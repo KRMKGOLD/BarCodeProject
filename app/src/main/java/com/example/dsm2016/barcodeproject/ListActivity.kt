@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.widget.Toast
-import com.google.zxing.integration.android.IntentIntegrator.QR_CODE
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.aztec.encoder.AztecCode
 import kotlinx.android.synthetic.main.activity_list.*
 
 var codeArray = arrayListOf<codeData>()
@@ -39,16 +39,18 @@ class ListActivity : AppCompatActivity() {
         val codeListImage : ArrayList<Bitmap> = arrayListOf()
         val codeListFormat : ArrayList<String> = arrayListOf()
 
-        if(intent.getStringArrayListExtra("data") != null) {
+        if (intent.getStringArrayListExtra("data") != null) {
             codeListData.addAll(intent.getStringArrayListExtra("data"))
             codeListFormat.addAll(intent.getStringArrayListExtra("format"))
 
             for(index in codeListData.indices){
-                if(codeListFormat[index] != QR_CODE) {
-                    codeListImage.add(ChangeCodeToImage().getBarCodeImageData(codeListData[index]))
-                }
-                else {
-                    codeListImage.add(ChangeCodeToImage().getQRCodeImageData(codeListData[index]))
+                when(codeListFormat[index]) {
+                    BarcodeFormat.AZTEC.toString(), BarcodeFormat.DATA_MATRIX.toString(), BarcodeFormat.MAXICODE.toString(), BarcodeFormat.QR_CODE.toString() -> {
+                        codeListImage.add(ChangeCodeToImage().getQRCodeImageData(codeListData[index]))
+                    }
+                    else -> {
+                        codeListImage.add(ChangeCodeToImage().getBarCodeImageData(codeListData[index]))
+                    }
                 }
             }
 
@@ -60,10 +62,9 @@ class ListActivity : AppCompatActivity() {
 
             codeArray.addAll(intentDataArray)
 
+            intent.removeExtra("data")
+            intentDataArray.clear()
         }
-
-        intent.removeExtra("data")
-        intentDataArray.clear()
 
         listRecycler.adapter = listAdapter
 
