@@ -8,7 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.widget.Toast
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.aztec.encoder.AztecCode
 import kotlinx.android.synthetic.main.activity_list.*
 
 var codeArray = arrayListOf<codeData>()
@@ -21,22 +22,11 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        var samepleToastString = ""
-
         for(index in listAdapter.codeList.indices){
             listAdapter.codeList[index].checked = false
         }
-        // 모든 바코드의 checkbox를 false로 바꾸기
 
         deleteButton.setOnClickListener {
-//            for(index in listAdapter.codeList.indices){
-//                if(listAdapter.codeList[index].checked) {
-//                    samepleToastString += "${index}번째 바코드가 선택되었습니다. "
-//                }
-//            }
-//            Toast.makeText(this, samepleToastString, Toast.LENGTH_SHORT).show()
-//            samepleToastString = ""
-
             for(index in listAdapter.codeList.lastIndex downTo 0){
                 if(listAdapter.codeList[index].checked){
                     listAdapter.codeList.removeAt(index)
@@ -44,18 +34,23 @@ class ListActivity : AppCompatActivity() {
             }
             listAdapter.notifyDataSetChanged()
         }
-        for (i in 10 downTo -1) {
-        }
+
         val codeListData : ArrayList<String> = arrayListOf()
         val codeListImage : ArrayList<Bitmap> = arrayListOf()
+        val codeListFormat : ArrayList<String> = arrayListOf()
 
-        if(intent.getStringArrayListExtra("data") != null) {
-            codeListData.addAll( intent.getStringArrayListExtra("data"))
+        if (intent.getStringArrayListExtra("data") != null) {
+            codeListData.addAll(intent.getStringArrayListExtra("data"))
+            codeListFormat.addAll(intent.getStringArrayListExtra("format"))
 
             for(index in codeListData.indices){
-                when(ChangeCodeToImage().isStringNumber(codeListData[index])) {
-                    true -> codeListImage.add(ChangeCodeToImage().getBarCodeImageData(codeListData[index]))
-                    false -> codeListImage.add(ChangeCodeToImage().getQRCodeImageData(codeListData[index]))
+                when(codeListFormat[index]) {
+                    BarcodeFormat.AZTEC.toString(), BarcodeFormat.DATA_MATRIX.toString(), BarcodeFormat.MAXICODE.toString(), BarcodeFormat.QR_CODE.toString() -> {
+                        codeListImage.add(ChangeCodeToImage().getQRCodeImageData(codeListData[index]))
+                    }
+                    else -> {
+                        codeListImage.add(ChangeCodeToImage().getBarCodeImageData(codeListData[index]))
+                    }
                 }
             }
 
@@ -67,10 +62,9 @@ class ListActivity : AppCompatActivity() {
 
             codeArray.addAll(intentDataArray)
 
+            intent.removeExtra("data")
+            intentDataArray.clear()
         }
-
-        intent.removeExtra("data")
-        intentDataArray.clear()
 
         listRecycler.adapter = listAdapter
 
@@ -79,6 +73,5 @@ class ListActivity : AppCompatActivity() {
         listRecycler.setHasFixedSize(true)
 
     }
-
 
 }

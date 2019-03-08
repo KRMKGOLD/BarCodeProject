@@ -3,16 +3,19 @@ package com.example.dsm2016.barcodeproject
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import com.google.zxing.BarcodeFormat
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     var codeResult : ArrayList<String> = arrayListOf()
+    var codeFormat : ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,13 +25,12 @@ class MainActivity : AppCompatActivity() {
             val activityIntent = Intent(this, ListActivity::class.java)
             if(!(codeResult.isEmpty())) {
                 activityIntent.putExtra("data", codeResult)
+                activityIntent.putExtra("format", codeFormat)
                 startActivity(activityIntent)
             }
             else {
                 startActivity(activityIntent)
-                // dialog
             }
-//            ListActivity().listAdapter.notifyDataSetChanged()
             codeResult.clear()
         }
     }
@@ -57,8 +59,10 @@ class MainActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this, "스캔에 성공했습니다. Data : ${result.contents}", Toast.LENGTH_SHORT).show()
-//                Log.d("Succeed scan Code", result.contents)
                 codeResult.add(result.contents)
+                codeFormat.add(result.formatName)
+                Log.d("formatname", result.formatName)
+                Log.d("barcodeformat tostring", BarcodeFormat.QR_CODE.toString())
             }
         }
 
@@ -69,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         integrator.captureActivity = CustomCaptureActivity::class.java
         integrator.setOrientationLocked(false)
         integrator.setPrompt("바코드나 QR코드를 사각형 안으로 넣어주세요.")
-//        integrator.addExtra("SCAN_MODE", "QR_CODE_MODE")
         integrator.initiateScan()
     }
 
