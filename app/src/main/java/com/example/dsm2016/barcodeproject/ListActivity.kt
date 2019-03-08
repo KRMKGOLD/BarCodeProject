@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.aztec.encoder.AztecCode
 import kotlinx.android.synthetic.main.activity_list.*
 
 var codeArray = arrayListOf<codeData>()
@@ -43,7 +42,7 @@ class ListActivity : AppCompatActivity() {
             codeListData.addAll(intent.getStringArrayListExtra("data"))
             codeListFormat.addAll(intent.getStringArrayListExtra("format"))
 
-            for(index in codeListData.indices){
+            for(index in 0..codeListData.lastIndex){
                 when(codeListFormat[index]) {
                     BarcodeFormat.AZTEC.toString(), BarcodeFormat.DATA_MATRIX.toString(), BarcodeFormat.MAXICODE.toString(), BarcodeFormat.QR_CODE.toString() -> {
                         codeListImage.add(ChangeCodeToImage().getQRCodeImageData(codeListData[index]))
@@ -54,15 +53,16 @@ class ListActivity : AppCompatActivity() {
                 }
             }
 
-            if(codeListData.lastIndex == codeListImage.lastIndex){
-                for(index in 0..codeListData.lastIndex){
-                    intentDataArray.add(codeData(codeListImage[index], codeListData[index]))
-                }
+
+            for(index in 0..codeListData.lastIndex){
+                intentDataArray.add(codeData(codeListImage[index], codeListData[index]))
             }
 
             codeArray.addAll(intentDataArray)
 
             intent.removeExtra("data")
+            intent.removeExtra("format")
+
             intentDataArray.clear()
         }
 

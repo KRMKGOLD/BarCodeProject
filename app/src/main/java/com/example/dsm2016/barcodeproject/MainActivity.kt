@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(activityIntent)
             }
             codeResult.clear()
+            codeFormat.clear()
         }
     }
 
