@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import com.google.zxing.BarcodeFormat
 import kotlinx.android.synthetic.main.activity_list.*
 
@@ -26,13 +25,19 @@ class ListActivity : AppCompatActivity() {
         }
 
         deleteButton.setOnClickListener {
-//            }
-
             for(index in codeArray.lastIndex downTo 0){
                 if(codeArray[index].checked){
                     codeArray.removeAt(index)
                 }
             }
+            listAdapter.notifyDataSetChanged()
+        }
+
+        selectAllButton.setOnClickListener {
+            for(index in codeArray.indices) {
+                listAdapter.codeList[index].checked = true
+            }
+
             listAdapter.notifyDataSetChanged()
         }
 
