@@ -2,6 +2,7 @@ package com.example.dsm2016.barcodeproject
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,8 @@ class ListAdapter(val context: Context, val codeList : ArrayList<codeData>) : Re
             codeCheckbox.setOnClickListener {
                 codeList[adapterPosition].checked = !(codeList[adapterPosition].checked)
             }
+
+            codeText.movementMethod = ScrollingMovementMethod()
         }
     }
 }

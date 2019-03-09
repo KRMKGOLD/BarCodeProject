@@ -9,12 +9,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
-import com.google.zxing.BarcodeFormat
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
-import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,12 +29,13 @@ class MainActivity : AppCompatActivity() {
         checkListButton.setOnClickListener {
             val activityIntent = Intent(this, ListActivity::class.java)
             if (!(codeResult.isEmpty())) {
+                codeResult.reverse()
+                codeFormat.reverse()
                 activityIntent.putExtra("data", codeResult)
                 activityIntent.putExtra("format", codeFormat)
                 startActivity(activityIntent)
-            } else {
-                startActivity(activityIntent)
-            }
+            } else startActivity(activityIntent)
+
             codeResult.clear()
             codeFormat.clear()
         }
@@ -75,9 +74,9 @@ class MainActivity : AppCompatActivity() {
             loadDialog.setPositiveButton("예"){ _: DialogInterface, _: Int ->
                 val reloadCodeData = pref.all
                 val reloadFormatData = pref2.all
-                var temp = 0
 
                 if(!reloadCodeData.isEmpty()){
+                    var temp = 0
                     for(item in reloadCodeData) {
                         val stringData = reloadCodeData["array_$temp"]
                         val formatData = reloadFormatData["array2_${temp++}"]
@@ -89,10 +88,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     Toast.makeText(this, "데이터를 불러왔습니다.", Toast.LENGTH_SHORT).show()
                 }
-                else {
-                    Toast.makeText(this, "불러올 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-
+                else Toast.makeText(this, "불러올 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
             }
             loadDialog.setNegativeButton("아니오"){ _: DialogInterface, _: Int -> }
             loadDialog.show()
@@ -107,17 +103,12 @@ class MainActivity : AppCompatActivity() {
             loadDialog.setMessage("데이터를 삭제할 시 저장된 데이터가 없어집니다.")
 
             loadDialog.setPositiveButton("예") { _: DialogInterface, _: Int ->
-                editor1.clear()
-                editor1.apply()
-
-                editor2.clear()
-                editor2.apply()
+                editor1.clear(); editor2.clear()
+                editor1.apply(); editor2.apply()
 
                 Toast.makeText(this, "데이터를 삭제했습니다.", Toast.LENGTH_SHORT).show()
             }
-            loadDialog.setNegativeButton("아니오") { _: DialogInterface, _: Int ->
-
-            }
+            loadDialog.setNegativeButton("아니오") { _: DialogInterface, _: Int -> }
             loadDialog.show()
         }
 
@@ -148,8 +139,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "스캔에 성공했습니다. Data : ${result.contents}", Toast.LENGTH_SHORT).show()
                 codeResult.add(result.contents)
                 codeFormat.add(result.formatName)
-                Log.d("formatname", result.formatName)
-                Log.d("barcodeformat tostring", BarcodeFormat.QR_CODE.toString())
             }
         }
 
