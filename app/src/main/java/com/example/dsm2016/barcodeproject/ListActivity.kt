@@ -49,7 +49,7 @@ class ListActivity : AppCompatActivity() {
                 intentDataArray.add(codeData(codeListImage[index], codeListData[index], codeFormat = codeListFormat[index]))
             }
 
-            codeArray.addAll(intentDataArray)
+            codeArray.addAll(0, intentDataArray)
 
             intent.removeExtra("data")
             intent.removeExtra("format")

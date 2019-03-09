@@ -10,27 +10,16 @@ class ChangeCodeToImage {
     val imageWriter = MultiFormatWriter()
     val codeEncoder = BarcodeEncoder()
 
-//    fun isStringNumber(data : String) : Boolean {
-//        return try {
-//            println("${data.toDouble()}")
-//            true
-//        } catch (e : NumberFormatException) {
-//            false
-//        }
-//    }
-
     fun getBarCodeImageData(result : String) : Bitmap {
         val _1dWidth = 320
         val _1dHeight = 180
 
         val BCbyteMap = imageWriter.encode(result, BarcodeFormat.CODE_128, _1dWidth, _1dHeight)
-//        val BCbitmap = Bitmap.createBitmap(_1dWidth, _1dHeight, Bitmap.Config.ARGB_8888)
         val BCbitmap = codeEncoder.createBitmap(BCbyteMap)
 
         for (i in 0 until _1dWidth)
             for (j in 0 until _1dHeight) {
                 BCbitmap.setPixel(i, j, if (BCbyteMap.get(i, j)) Color.BLACK else Color.WHITE)
-                // 바코드 bitmap
             }
 
         return BCbitmap
@@ -48,7 +37,6 @@ class ChangeCodeToImage {
         for (i in 0 until _2dWidth)
             for (j in 0 until _2dHeight) {
                 QRbitmap.setPixel(i, j, if (QRbyteMap.get(i, j)) Color.BLACK else Color.WHITE)
-                // QR코드 bitmap
             }
 
         return QRbitmap

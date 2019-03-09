@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
                 val saveFormatArray = arrayListOf<String>()
 
                 for(index in codeArray) {
-                    saveCodeArray.add(index.content)
-                    saveFormatArray.add(index.codeFormat)
+                    saveCodeArray.add(0, index.content)
+                    saveFormatArray.add(0, index.codeFormat)
                 }
 
                 for(index in codeArray.indices) {
