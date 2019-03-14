@@ -41,19 +41,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         saveDataButton.setOnClickListener {
-            if(!(codeArray.isEmpty())) {
-                val editor1 : SharedPreferences.Editor = pref.edit()
-                val editor2 : SharedPreferences.Editor = pref2.edit()
+            if (!(codeArray.isEmpty())) {
+                val editor1: SharedPreferences.Editor = pref.edit()
+                val editor2: SharedPreferences.Editor = pref2.edit()
 
                 val saveCodeArray = arrayListOf<String>()
                 val saveFormatArray = arrayListOf<String>()
 
-                for(index in codeArray) {
+                for (index in codeArray) {
                     saveCodeArray.add(0, index.content)
                     saveFormatArray.add(0, index.codeFormat)
                 }
 
-                for(index in codeArray.indices) {
+                for (index in codeArray.indices) {
                     editor1.putString("array_$index", saveCodeArray[index])
                     editor2.putString("array2_$index", saveFormatArray[index])
                 }
@@ -61,8 +61,7 @@ class MainActivity : AppCompatActivity() {
                 editor2.apply()
                 Toast.makeText(this, "데이터를 저장했습니다.", Toast.LENGTH_SHORT).show()
 
-            }
-            else {
+            } else {
                 Toast.makeText(this, "등록할 데이터가 존재하지 않습니다. 데이터 목록을 확인해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
