@@ -7,18 +7,18 @@ import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
 
 class ChangeCodeToImage {
-    val imageWriter = MultiFormatWriter()
-    val codeEncoder = BarcodeEncoder()
+    private val imageWriter = MultiFormatWriter()
+    private val codeEncoder = BarcodeEncoder()
 
     fun getBarCodeImageData(result : String) : Bitmap {
-        val _1dWidth = 320
-        val _1dHeight = 180
+        val width = 320
+        val height = 180
 
-        val BCbyteMap = imageWriter.encode(result, BarcodeFormat.CODE_128, _1dWidth, _1dHeight)
+        val BCbyteMap = imageWriter.encode(result, BarcodeFormat.CODE_128, width, height)
         val BCbitmap = codeEncoder.createBitmap(BCbyteMap)
 
-        for (i in 0 until _1dWidth)
-            for (j in 0 until _1dHeight) {
+        for (i in 0 until width)
+            for (j in 0 until height) {
                 BCbitmap.setPixel(i, j, if (BCbyteMap.get(i, j)) Color.BLACK else Color.WHITE)
             }
 
@@ -26,19 +26,19 @@ class ChangeCodeToImage {
     }
 
     fun getQRCodeImageData(result : String) : Bitmap {
-        val _2dWidth = 100
-        val _2dHeight = 100
+        val width = 100
+        val height = 100
 
         val codeEncoder = BarcodeEncoder()
 
-        val QRbyteMap = imageWriter.encode(result, BarcodeFormat.QR_CODE, _2dWidth, _2dHeight)
-        val QRbitmap = codeEncoder.createBitmap(QRbyteMap)
+        val qrBitMatrix = imageWriter.encode(result, BarcodeFormat.QR_CODE, width, height)
+        val qrBitmp = codeEncoder.createBitmap(qrBitMatrix)
 
-        for (i in 0 until _2dWidth)
-            for (j in 0 until _2dHeight) {
-                QRbitmap.setPixel(i, j, if (QRbyteMap.get(i, j)) Color.BLACK else Color.WHITE)
+        for (i in 0 until width)
+            for (j in 0 until height) {
+                qrBitmp.setPixel(i, j, if (qrBitMatrix.get(i, j)) Color.BLACK else Color.WHITE)
             }
 
-        return QRbitmap
+        return qrBitmp
     }
 }

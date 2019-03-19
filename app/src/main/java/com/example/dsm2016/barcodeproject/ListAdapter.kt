@@ -10,7 +10,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 
-class ListAdapter(val context: Context, val codeList : ArrayList<codeData>) : RecyclerView.Adapter<ListAdapter.ListHolder>() {
+class ListAdapter(private val context: Context, val codeList : ArrayList<codeData>) : RecyclerView.Adapter<ListAdapter.ListHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.recycler_row, parent, false)
         return ListHolder(view)
